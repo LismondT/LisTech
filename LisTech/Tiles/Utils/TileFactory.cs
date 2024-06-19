@@ -24,6 +24,9 @@ public class TileFactory
             case TileIdEnum.Light:
                 tile = new LightTile();
                 break;
+            case TileIdEnum.Wall:
+                tile = new WallTile();
+                break;
         }
 
         return tile;

@@ -6,6 +6,7 @@ using SFML.Window;
 using SFML.System;
 using LisTech.Core.Player;
 using LisTech.Enums;
+using LisTech.Core.SFML;
 
 namespace LisTech.MVC;
 
@@ -30,8 +31,8 @@ public class GameControler
         window.MouseButtonReleased += Window_MouseButtonReleased;
         window.MouseMoved += Window_MouseMoved;
         window.KeyPressed += Window_KeyPressed;
+        window.Resized += Window_Resized;
     }
-
 
 
     public void MainLoop()
@@ -95,6 +96,14 @@ public class GameControler
         if (key == Keyboard.Key.Num1) Player.CreationTileType = TileIdEnum.Wire;
         if (key == Keyboard.Key.Num2) Player.CreationTileType = TileIdEnum.EnergySource;
         if (key == Keyboard.Key.Num3) Player.CreationTileType = TileIdEnum.Light;
+        if (key == Keyboard.Key.Num4) Player.CreationTileType = TileIdEnum.Wall;
+
+        if (key == Keyboard.Key.C) Map.Instance.ClearMap();
+    }
+
+    private void Window_Resized(object? sender, SizeEventArgs e)
+    {
+        
     }
 
     #endregion

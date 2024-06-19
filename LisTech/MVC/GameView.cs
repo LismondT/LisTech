@@ -13,14 +13,12 @@ public class GameView
 {
     public RenderWindow Window { get; set; }
 
-    //public TileBase TileInfo { private get; set; }
-
     public GameView(GameModel model)
     {
         GameModel = model;
-        //TileInfo = TileFactory.Create(TileType.None);
+        Vector2u screenSize = GlobalVariables.ScreenSize;
 
-        VideoMode videoMode = new(900, 900);
+        VideoMode videoMode = new(screenSize.X, screenSize.Y);
         string title = "LisTech";
 
         Window = new RenderWindow(videoMode, title);
@@ -74,7 +72,6 @@ public class GameView
         if (!Map.Instance.OnMap(mapX, mapY)) return;
 
         TileBase tile = Map.Instance.GetTile(mapX, mapY);
-        //TileInfo = tile;
 
         TileIdEnum type = tile.GetTileType();
         char icon = tile.GetIcon();
@@ -92,5 +89,18 @@ public class GameView
         }
 
         ScreenDrawer.SetDefaultFontSize();
+
+        //Обводка клетки
+        Vector2f cellSize = (Vector2f)ScreenDrawer.CellSize;
+        RectangleShape shape = new RectangleShape();
+        shape.Size = cellSize;
+        shape.FillColor = Color.Transparent;
+        shape.OutlineColor = Color.Green;
+        shape.OutlineThickness = 1;
+        shape.Position = new Vector2f(mapX * cellSize.X, mapY * cellSize.Y);
+
+        Window.Draw(shape);
     }
+
+    public void OnResize() => ScreenDrawer.OnResize();
 }

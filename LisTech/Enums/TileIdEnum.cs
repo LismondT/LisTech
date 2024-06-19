@@ -6,4 +6,5 @@ public enum TileIdEnum
     EnergySource,
     Wire,
     Light,
+    Wall,
 }

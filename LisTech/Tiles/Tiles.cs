@@ -1,10 +1,8 @@
 ﻿using LisTech.Core;
 using LisTech.Enums;
 using LisTech.Tiles.Utils;
+using SFML.Graphics;
 using SFML.System;
-using System.Drawing;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace LisTech.Tiles;
 
@@ -16,6 +14,7 @@ public abstract class TileBase
 {
     public abstract TileIdEnum GetTileType();
     public abstract char GetIcon();
+    public virtual Color GetColor() => Color.White;
     public abstract string GetInfo();
 
     public virtual void OnCreate(Vector2i pos) { }
@@ -108,6 +107,16 @@ public class NoneTile : TileBase
 }
 
 
+public class WallTile : TileBase
+{
+    public override char GetIcon() => '█';
+
+    public override string GetInfo() => "Стена";
+
+    public override TileIdEnum GetTileType() => TileIdEnum.Wall;
+}
+
+
 
 #endregion
 
@@ -154,15 +163,15 @@ public class WireTile : EnergyTileBase
 
     Dictionary<int, char> _tilemap = new()
     {
-        { 0, '▀' }, //Single
-        { 1, '▀' }, //Up
-        { 2, '▀' }, //Right
+        { 0, '□' }, //Single
+        { 1, '□' }, //Up
+        { 2, '□' }, //Right
         { 3, '╚' }, //Up + Right
-        { 4, '▀' }, //Down
+        { 4, '□' }, //Down
         { 5, '║' }, //Up + Down
         { 6, '╔' }, //Down + Right
         { 7, '╠' }, // Down + Up + Right
-        { 8, '▀' }, //Left
+        { 8, '□' }, //Left
         { 9, '╝' }, //Up + Left
         { 10, '═' }, //Left + Right
         { 11, '╩' }, //Left + Up + Right
@@ -174,12 +183,9 @@ public class WireTile : EnergyTileBase
 
     public override TileIdEnum GetTileType() => TileIdEnum.Wire;
     public override char GetIcon() => _icon;
-    public override string GetInfo() => "Провода";
+    public override Color GetColor() => Color.Red;
 
-    public override void OnCreate(Vector2i pos)
-    {
-        base.OnCreate(pos);
-    }
+    public override string GetInfo() => "Провода";
 
     public override void Update(Vector2i pos)
     {
@@ -193,7 +199,7 @@ public class WireTile : EnergyTileBase
         List<Vector2i> wiresPos = TilesFinder.FindTilesCross(pos, TileIdEnum.Wire);
 
         int tileIndex = 0;
-        
+
         foreach (Vector2i w in wiresPos)
         {
             TileAround relPos = TilesHelper.GetRelativePosition(pos, w);

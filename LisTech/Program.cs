@@ -8,8 +8,6 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine((int)TileAround.Right);
-
         Game.Init();
         Game.Controler?.MainLoop();
     }

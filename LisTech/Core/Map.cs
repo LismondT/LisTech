@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Reflection.Metadata.Ecma335;
 using System.Xml.Serialization;
 using LisTech.Enums;
 using LisTech.Tiles;
@@ -79,5 +80,20 @@ public class Map
         if (pos.Y >= Size.Y || pos.Y < 0) return false;
 
         return true;
+    }
+
+    public Vector2i WindowToMapCoord(Vector2i pos)
+    {
+        Vector2u screenSize = Game.View?.Window.Size ?? throw new Exception();
+
+        int x = (int)(pos.X * Size.X / screenSize.X);
+        int y = (int)(pos.Y * Size.Y / screenSize.Y);
+
+        x = (int)Math.Min(x, Size.X - 1);
+        x = Math.Max(x, 0);
+        y = (int)Math.Min(y, Size.Y - 1);
+        y = Math.Max(y, 0);
+
+        return new Vector2i(x, y);
     }
 }
